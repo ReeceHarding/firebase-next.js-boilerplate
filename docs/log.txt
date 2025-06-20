@@ -1,0 +1,18 @@
+[Logger] Logging started at 2025-06-20T08:57:52.781Z
+[Logger] All output will be logged to: /Users/reeceharding/firebase-next.js-boilerplate-2/docs/log.txt
+
+[Port Killer] Checking for processes on port 3005...
+[Port Killer] No process found on port 3005
+[Port Killer] Port 3005 should now be free
+[Logger] Starting Next.js dev server...
+
+
+[Logger] Dev process exited with code 0
+Need to install the following packages:
+next@15.3.4
+Ok to proceed? (y) 
+[Logger] Received SIGINT, shutting down...
+
+[Logger] Received SIGINT, shutting down...
+
+[Logger] Next.js dev server exited with code null

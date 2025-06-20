@@ -57,8 +57,5 @@ firebase-*.json
 ai-video-430de-firebase-adminsdk-fbsvc-858ede978e.json
 aivideoeduedu-firebase-adminsdk.json
 
-# development logs
-docs/log.txt
-
 # secrets directory
 secrets/
