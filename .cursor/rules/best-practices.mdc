@@ -1,0 +1,708 @@
+---
+alwaysApply: true
+---
+# Software Engineering Best Practices: AI Code Generation Rules
+
+## Table of Contents
+1. [Overview](#overview)
+2. [Anti-Duplication Rules](#anti-duplication-rules)
+3. [Core Principles](#core-principles)
+4. [SOLID Principles](#solid-principles)
+5. [Code Organization](#code-organization)
+6. [File Management](#file-management)
+7. [Root Cause Analysis](#root-cause-analysis)
+8. [Quality Enforcement](#quality-enforcement)
+9. [Common Anti-Patterns](#common-anti-patterns)
+10. [Validation Checklist](#validation-checklist)
+
+---
+
+## Overview
+
+This guide establishes mandatory software engineering best practices for AI code generation. These rules are designed to prevent code duplication, ensure maintainability, and enforce industry standards.
+
+### Critical Mission
+**ELIMINATE CODE DUPLICATION AT ALL COSTS**
+
+The primary goal is to prevent the creation of duplicate, redundant, or unnecessary files and functions. Every piece of code should have a single, well-defined purpose and location.
+
+---
+
+## Anti-Duplication Rules
+
+### Rule 1: MANDATORY SEARCH BEFORE CREATE
+```xml
+<search_protocol>
+BEFORE creating ANY new file, function, or component, you MUST:
+1. Search the entire codebase for existing implementations
+2. Check for similar functionality with different names
+3. Verify that no existing code can be extended or modified
+4. Confirm that the new code serves a genuinely unique purpose
+</search_protocol>
+```
+
+### Rule 2: EXTEND BEFORE CREATE
+```xml
+<extension_priority>
+ALWAYS prioritize extending existing code over creating new code:
+1. Add functions to existing utilities rather than creating new utility files
+2. Extend existing components rather than creating similar components
+3. Modify existing APIs rather than creating parallel APIs
+4. Enhance existing services rather than creating duplicate services
+</extension_priority>
+```
+
+### Rule 3: ONE SOURCE OF TRUTH
+```xml
+<single_source>
+Every piece of functionality must exist in exactly ONE location:
+- Constants: Single configuration file
+- Types: Single type definition file per domain
+- Utilities: Single utility file per category
+- Components: Single component per UI element
+- Services: Single service per business domain
+</single_source>
+```
+
+### Rule 4: FORBIDDEN DUPLICATION PATTERNS
+```xml
+<forbidden_patterns>
+NEVER create:
+- Multiple files with similar names (utils.js, helpers.js, utilities.js)
+- Multiple functions that do the same thing with different names
+- Multiple components that render the same UI with slight variations
+- Multiple services that handle the same business logic
+- Multiple configuration files for the same purpose
+- Multiple type definitions for the same data structure
+</forbidden_patterns>
+```
+
+---
+
+## Core Principles
+
+### Single Responsibility Principle (SRP)
+```xml
+<srp_enforcement>
+Every class, function, and module must have ONE reason to change:
+
+GOOD:
+- `UserValidator` - Only validates user data
+- `EmailService` - Only handles email operations
+- `ProductFormatter` - Only formats product data
+
+BAD:
+- `UserManager` - Handles validation, database operations, and email sending
+- `DataHelper` - Handles multiple unrelated data operations
+- `Utils` - Contains unrelated utility functions
+</srp_enforcement>
+```
+
+### Don't Repeat Yourself (DRY)
+```xml
+<dry_enforcement>
+ZERO TOLERANCE for code duplication:
+
+MANDATORY ACTIONS:
+1. Extract common logic into shared functions
+2. Create reusable components for repeated UI patterns
+3. Use configuration files for repeated data structures
+4. Create base classes for shared behavior
+5. Use composition for shared functionality
+
+DETECTION METHODS:
+- If you copy-paste ANY code, stop immediately and refactor
+- If you create similar functions with different names, consolidate them
+- If you find yourself writing the same logic twice, extract it
+</dry_enforcement>
+```
+
+### Keep It Simple, Stupid (KISS)
+```xml
+<kiss_enforcement>
+Always choose the simplest solution that works:
+
+PREFER:
+- Direct function calls over complex abstractions
+- Simple if-else over strategy patterns for 2-3 conditions
+- Inline logic over separate files for simple operations
+- Built-in language features over custom implementations
+
+AVOID:
+- Over-engineering simple problems
+- Creating abstractions for future requirements that don't exist
+- Complex design patterns when simple functions would work
+</kiss_enforcement>
+```
+
+### You Aren't Gonna Need It (YAGNI)
+```xml
+<yagni_enforcement>
+Don't build features until you actually need them:
+
+FORBIDDEN:
+- Creating interfaces for classes that will never have multiple implementations
+- Adding configuration options for values that never change
+- Building extensibility for requirements that don't exist
+- Creating abstract base classes for single implementations
+
+REQUIRED:
+- Build only what's needed for current requirements
+- Refactor when new requirements actually emerge
+- Delete unused code and features
+</yagni_enforcement>
+```
+
+---
+
+## SOLID Principles
+
+### Open/Closed Principle
+```xml
+<open_closed>
+Design for extension, not modification:
+
+IMPLEMENTATION:
+- Use dependency injection for external services
+- Create plugin architectures for extensible functionality
+- Use configuration files for behavior changes
+- Design APIs that can be extended without breaking existing code
+
+EXAMPLE:
+// GOOD: Extensible validation system
+interface Validator {
+  validate(data: any): ValidationResult;
+}
+
+// BAD: Hard-coded validation logic
+function validateUser(user: User) {
+  // Hard-coded validation rules
+}
+</open_closed>
+```
+
+### Liskov Substitution Principle
+```xml
+<liskov_substitution>
+Subtypes must be substitutable for their base types:
+
+RULES:
+- Subclasses must honor the contract of their parent class
+- Don't strengthen preconditions or weaken postconditions
+- Maintain behavioral expectations of the base class
+
+EXAMPLE:
+// GOOD: Proper inheritance
+class EmailNotifier implements Notifier {
+  notify(message: string): Promise<void> {
+    // Implementation that maintains Notifier contract
+  }
+}
+
+// BAD: Violates contract
+class BrokenNotifier implements Notifier {
+  notify(message: string): Promise<void> {
+    throw new Error("Not implemented"); // Violates contract
+  }
+}
+</liskov_substitution>
+```
+
+### Interface Segregation Principle
+```xml
+<interface_segregation>
+Clients shouldn't depend on interfaces they don't use:
+
+IMPLEMENTATION:
+- Create small, focused interfaces
+- Separate read and write operations
+- Don't force clients to implement unused methods
+
+EXAMPLE:
+// GOOD: Focused interfaces
+interface UserReader {
+  getUser(id: string): Promise<User>;
+}
+
+interface UserWriter {
+  updateUser(user: User): Promise<void>;
+}
+
+// BAD: Monolithic interface
+interface UserService {
+  getUser(id: string): Promise<User>;
+  updateUser(user: User): Promise<void>;
+  deleteUser(id: string): Promise<void>;
+  exportUsers(): Promise<string>;
+  importUsers(data: string): Promise<void>;
+}
+</interface_segregation>
+```
+
+### Dependency Inversion Principle
+```xml
+<dependency_inversion>
+Depend on abstractions, not concretions:
+
+IMPLEMENTATION:
+- Use dependency injection
+- Define interfaces for external dependencies
+- Inject dependencies rather than creating them
+
+EXAMPLE:
+// GOOD: Depends on abstraction
+class UserService {
+  constructor(private db: Database) {}
+  
+  async getUser(id: string): Promise<User> {
+    return this.db.findUser(id);
+  }
+}
+
+// BAD: Depends on concrete class
+class UserService {
+  private db = new PostgresDatabase(); // Hard dependency
+  
+  async getUser(id: string): Promise<User> {
+    return this.db.findUser(id);
+  }
+}
+</dependency_inversion>
+```
+
+---
+
+## Code Organization
+
+### Separation of Concerns
+```xml
+<separation_of_concerns>
+Divide code into distinct sections with specific responsibilities:
+
+DIRECTORY STRUCTURE:
+```
+src/
+├── components/           # UI components only
+├── services/            # Business logic only
+├── utils/               # Pure utility functions only
+├── types/               # Type definitions only
+├── hooks/               # React hooks only
+├── config/              # Configuration only
+├── constants/           # Constants only
+└── api/                 # API calls only
+```
+
+FORBIDDEN MIXING:
+- UI components with business logic
+- Database operations with presentation logic
+- Utility functions with business rules
+- Configuration with implementation details
+</separation_of_concerns>
+```
+
+### Composition Over Inheritance
+```xml
+<composition_over_inheritance>
+Favor object composition over class inheritance:
+
+PREFERRED APPROACH:
+- Use interfaces and composition
+- Create small, focused components
+- Combine behavior through composition
+
+EXAMPLE:
+// GOOD: Composition
+class UserService {
+  constructor(
+    private validator: UserValidator,
+    private repository: UserRepository,
+    private notifier: NotificationService
+  ) {}
+}
+
+// BAD: Inheritance chain
+class UserService extends BaseService {
+  // Inherits unnecessary methods and complexity
+}
+</composition_over_inheritance>
+```
+
+### Law of Demeter
+```xml
+<law_of_demeter>
+A module should only talk to its immediate friends:
+
+RULES:
+- Don't chain method calls beyond one level
+- Don't access nested properties directly
+- Use explicit interfaces for communication
+
+EXAMPLE:
+// GOOD: Respect boundaries
+const userEmail = user.getEmail();
+const isValid = validator.isValidEmail(userEmail);
+
+// BAD: Violates Law of Demeter
+const isValid = user.getProfile().getContact().getEmail().includes('@');
+</law_of_demeter>
+```
+
+---
+
+## File Management
+
+### File Naming Conventions
+```xml
+<naming_conventions>
+MANDATORY NAMING RULES:
+
+FILES:
+- Use kebab-case for file names: `user-service.ts`
+- Use descriptive names: `email-validator.ts` not `validator.ts`
+- Include purpose in name: `user-profile-component.tsx`
+
+DIRECTORIES:
+- Use plural nouns for collections: `components/`, `services/`, `utils/`
+- Use singular nouns for single items: `config/`, `types/`
+- Use clear, descriptive names: `user-management/` not `stuff/`
+
+FORBIDDEN NAMES:
+- Generic names: `utils.ts`, `helpers.ts`, `common.ts`
+- Numbered files: `component1.ts`, `service2.ts`
+- Vague names: `misc.ts`, `other.ts`, `temp.ts`
+</naming_conventions>
+```
+
+### File Organization Rules
+```xml
+<file_organization>
+MANDATORY STRUCTURE:
+
+SINGLE PURPOSE FILES:
+- Each file should have ONE clear purpose
+- File name should indicate exact functionality
+- Maximum 200 lines per file (excluding types)
+
+PROPER IMPORTS:
+- Use absolute imports from root: `@/components/user-profile`
+- Group imports: external libraries, internal modules, relative imports
+- No circular dependencies
+
+EXPORT PATTERNS:
+- Use named exports for specific functions
+- Use default exports for main component/class
+- Export types separately from implementations
+</file_organization>
+```
+
+---
+
+## Root Cause Analysis
+
+### Problem Analysis Framework
+```xml
+<root_cause_analysis>
+BEFORE creating any new code, follow this framework:
+
+1. IDENTIFY THE REAL PROBLEM
+   - What is the actual issue?
+   - What symptoms are we seeing?
+   - What is the desired outcome?
+
+2. TRACE TO THE SOURCE
+   - Where does this problem originate?
+   - What is the root cause?
+   - What are we trying to achieve?
+
+3. ASK "WHY" THREE TIMES
+   - Why does this problem exist?
+   - Why wasn't this handled before?
+   - Why are we solving it this way?
+
+4. EXPLORE EXISTING SOLUTIONS
+   - Can we modify existing code?
+   - Can we use existing patterns?
+   - What would be the minimal change?
+
+5. VALIDATE THE APPROACH
+   - Does this solve the root cause?
+   - Are we adding unnecessary complexity?
+   - Will this create future problems?
+</root_cause_analysis>
+```
+
+### Direct Solutions Over Band-Aids
+```xml
+<direct_solutions>
+ALWAYS prefer direct solutions to wrapper solutions:
+
+EXAMPLES:
+
+PROBLEM: API responses are inconsistent
+BAD SOLUTION: Create response normalizer service
+GOOD SOLUTION: Fix the API endpoints to return consistent data
+
+PROBLEM: Database queries are complex
+BAD SOLUTION: Create query builder wrapper
+GOOD SOLUTION: Use proper ORM methods or optimize queries directly
+
+PROBLEM: Configuration is scattered
+BAD SOLUTION: Create configuration manager
+GOOD SOLUTION: Move all config to single config file
+
+PROBLEM: Error handling is inconsistent
+BAD SOLUTION: Create error wrapper service
+GOOD SOLUTION: Implement consistent error handling patterns
+</direct_solutions>
+```
+
+---
+
+## Quality Enforcement
+
+### Pre-Creation Checklist
+```xml
+<pre_creation_checklist>
+BEFORE creating any new file or function, verify:
+
+□ I have searched the entire codebase for existing implementations
+□ I have checked for similar functionality with different names
+□ I have verified that existing code cannot be extended or modified
+□ I have confirmed this serves a genuinely unique purpose
+□ I have a clear, single responsibility for this code
+□ I have chosen the simplest solution that works
+□ I have followed the established naming conventions
+□ I have planned where this fits in the overall architecture
+□ I have considered the maintenance burden of this code
+□ I have written tests for this functionality
+</pre_creation_checklist>
+```
+
+### Code Review Standards
+```xml
+<code_review_standards>
+MANDATORY REVIEW CRITERIA:
+
+DUPLICATION CHECK:
+- No duplicate functionality exists elsewhere
+- No similar files with different names
+- No repeated code patterns
+
+ARCHITECTURAL ALIGNMENT:
+- Follows established patterns
+- Fits within existing structure
+- Maintains separation of concerns
+
+QUALITY STANDARDS:
+- Single responsibility principle
+- Clear, descriptive naming
+- Proper error handling
+- Comprehensive tests
+- Documentation where needed
+</code_review_standards>
+```
+
+---
+
+## Common Anti-Patterns
+
+### The Wrapper Trap
+```xml
+<wrapper_antipattern>
+AVOID creating wrappers for minor inconveniences:
+
+EXAMPLES TO AVOID:
+- Creating a wrapper around axios for one method
+- Wrapping a library because one function has a different signature
+- Creating a service class for single function calls
+
+INSTEAD:
+- Use the library directly
+- Create utility functions only when genuinely needed
+- Document unusual usage patterns
+</wrapper_antipattern>
+```
+
+### The Helper Class Explosion
+```xml
+<helper_antipattern>
+AVOID creating generic helper classes:
+
+FORBIDDEN PATTERNS:
+- `UtilityManager` - What utilities? What management?
+- `DataHelper` - What data? What help?
+- `CommonService` - What's common? What service?
+- `GeneralUtils` - Nothing is general
+
+INSTEAD:
+- Create specific utility functions
+- Use descriptive names for functionality
+- Group related functions by domain
+</helper_antipattern>
+```
+
+### Over-Engineering Simple Problems
+```xml
+<overengineering_antipattern>
+AVOID creating complex solutions for simple problems:
+
+EXAMPLES:
+- Configuration management system for 3 config values
+- Pipeline framework for simple data transformation
+- Event system for direct function calls
+- Factory pattern for single implementation
+
+INSTEAD:
+- Use simple functions for simple problems
+- Create abstractions only when complexity justifies them
+- Start simple and refactor when needed
+</overengineering_antipattern>
+```
+
+### The Abstraction Addiction
+```xml
+<abstraction_antipattern>
+AVOID creating abstractions before they're needed:
+
+FORBIDDEN:
+- Creating interfaces for classes that will never have multiple implementations
+- Building plugin systems for features that don't need plugins
+- Creating base classes for single implementations
+- Designing for extensibility that will never be used
+
+INSTEAD:
+- Build concrete implementations first
+- Extract abstractions when you have multiple implementations
+- Use YAGNI principle religiously
+</abstraction_antipattern>
+```
+
+---
+
+## Validation Checklist
+
+### Architecture Validation
+```xml
+<architecture_validation>
+VALIDATE EVERY IMPLEMENTATION:
+
+STRUCTURE:
+□ Single responsibility principle is followed
+□ No duplicate functionality exists
+□ Code is in the appropriate directory/module
+□ Dependencies are properly injected
+□ No circular dependencies exist
+
+NAMING:
+□ File names are descriptive and follow conventions
+□ Function names clearly indicate purpose
+□ Variable names are meaningful
+□ No generic or vague names used
+
+ORGANIZATION:
+□ Code is organized by feature/domain
+□ Proper separation of concerns
+□ Logical file structure
+□ Clear module boundaries
+</architecture_validation>
+```
+
+### Quality Validation
+```xml
+<quality_validation>
+VALIDATE CODE QUALITY:
+
+FUNCTIONALITY:
+□ Code serves a single, clear purpose
+□ No unnecessary complexity
+□ Proper error handling
+□ Edge cases are handled
+□ Performance is acceptable
+
+MAINTAINABILITY:
+□ Code is easy to understand
+□ Easy to modify and extend
+□ Well-documented where necessary
+□ Follows established patterns
+□ Tests are comprehensive
+
+INTEGRATION:
+□ Works well with existing code
+□ Follows established conventions
+□ Doesn't break existing functionality
+□ Maintains backward compatibility
+</quality_validation>
+```
+
+---
+
+## Implementation Guidelines
+
+### Step-by-Step Process
+```xml
+<implementation_process>
+FOLLOW THIS PROCESS FOR EVERY CODE CHANGE:
+
+1. ANALYZE THE REQUIREMENT
+   - What exactly needs to be accomplished?
+   - What are the constraints and requirements?
+   - What is the expected outcome?
+
+2. SEARCH FOR EXISTING SOLUTIONS
+   - Search codebase for similar functionality
+   - Check if existing code can be extended
+   - Verify no duplicate implementations exist
+
+3. DESIGN THE SOLUTION
+   - Choose the simplest approach that works
+   - Follow established patterns
+   - Maintain single responsibility
+
+4. IMPLEMENT THE SOLUTION
+   - Write clean, readable code
+   - Follow naming conventions
+   - Include proper error handling
+
+5. TEST THE IMPLEMENTATION
+   - Unit tests for functionality
+   - Integration tests for interactions
+   - Manual testing for user experience
+
+6. REVIEW AND REFACTOR
+   - Check against best practices
+   - Optimize for readability
+   - Remove unnecessary complexity
+
+7. DOCUMENT THE SOLUTION
+   - Add comments for complex logic
+   - Update documentation
+   - Create usage examples
+</implementation_process>
+```
+
+---
+
+## Conclusion
+
+Following these software engineering best practices ensures:
+- **Zero Code Duplication**: Every piece of functionality exists once
+- **Maintainable Architecture**: Easy to understand and modify
+- **Scalable Design**: Can grow without becoming complex
+- **Professional Quality**: Meets industry standards
+- **Efficient Development**: Faster development and fewer bugs
+
+### Key Principles to Remember
+
+1. **Search Before Create**: Always check if it already exists
+2. **Extend Before Build**: Modify existing code when possible
+3. **Simple Before Complex**: Choose the simplest solution
+4. **Direct Before Wrapper**: Solve root causes, not symptoms
+5. **Quality Before Speed**: Do it right the first time
+
+### Enforcement
+
+These rules are **NON-NEGOTIABLE**. Any code that violates these principles should be immediately refactored or rejected. The goal is to maintain a clean, efficient, and maintainable codebase that follows industry best practices.
+
+---
+
+*This guide should be reviewed regularly and updated as the codebase evolves and new patterns emerge.* 

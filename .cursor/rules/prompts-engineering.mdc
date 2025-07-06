@@ -1,0 +1,872 @@
+---
+alwaysApply: true
+---
+# AI Prompt Engineering Guide: Industry Best Practices
+
+## Table of Contents
+1. [Overview](#overview)
+2. [Core Principles](#core-principles)
+3. [XML Structure & Tags](#xml-structure--tags)
+4. [Role Definition](#role-definition)
+5. [Context Setting](#context-setting)
+6. [Instruction Clarity](#instruction-clarity)
+7. [Example Patterns](#example-patterns)
+8. [Output Formatting](#output-formatting)
+9. [Error Handling](#error-handling)
+10. [Advanced Techniques](#advanced-techniques)
+11. [Testing & Validation](#testing--validation)
+12. [Production Readiness Checklist](#production-readiness-checklist)
+
+---
+
+## Overview
+
+This guide establishes industry best practices for creating production-ready AI prompts. These guidelines ensure consistency, reliability, and optimal performance across all AI interactions.
+
+### Why This Matters
+- **Consistency**: Standardized prompts produce predictable results
+- **Reliability**: Well-structured prompts reduce errors and hallucinations
+- **Maintainability**: Clear structure makes prompts easier to update and debug
+- **Performance**: Optimized prompts improve response quality and speed
+
+---
+
+## Core Principles
+
+### 1. **Clarity Over Cleverness**
+- Use simple, direct language
+- Avoid ambiguous terms or complex sentence structures
+- Be explicit about requirements rather than assuming understanding
+
+### 2. **Structure Over Stream-of-Consciousness**
+- Organize information hierarchically
+- Use clear sections and subsections
+- Separate different types of instructions
+
+### 3. **Specificity Over Generality**
+- Provide concrete examples rather than abstract concepts
+- Define exact requirements and constraints
+- Specify desired output format explicitly
+
+### 4. **Testability Over Assumption**
+- Include validation criteria
+- Provide clear success/failure conditions
+- Make requirements measurable
+
+---
+
+## XML Structure & Tags
+
+### Essential XML Tags
+
+#### `<system>`
+Sets the overall context and persona for the AI.
+
+```xml
+<system>
+You are a senior software engineer with 10+ years of experience in full-stack development. 
+You specialize in React, Node.js, and cloud architecture. Your responses should be 
+professional, technically accurate, and include practical examples.
+</system>
+```
+
+#### `<context>`
+Provides background information and current situation.
+
+```xml
+<context>
+The user is working on a Next.js application with TypeScript. They have a Firebase backend 
+and are implementing user authentication. The app follows modern React patterns with hooks 
+and functional components.
+</context>
+```
+
+#### `<task>`
+Defines the specific task or goal to accomplish.
+
+```xml
+<task>
+Create a reusable authentication hook that handles login, logout, and user state management. 
+The hook should integrate with Firebase Auth and provide loading states and error handling.
+</task>
+```
+
+#### `<constraints>`
+Lists limitations, requirements, and boundaries.
+
+```xml
+<constraints>
+- Must use TypeScript with proper type definitions
+- Must handle loading states and errors gracefully
+- Must follow React hooks conventions
+- Must be compatible with Next.js 13+ App Router
+- Must include proper cleanup to prevent memory leaks
+</constraints>
+```
+
+#### `<examples>`
+Provides concrete examples of expected input/output.
+
+```xml
+<examples>
+<example>
+Input: User attempts login with email/password
+Output: Hook returns { user: User | null, loading: boolean, error: string | null, login: Function }
+</example>
+</examples>
+```
+
+#### `<output_format>`
+Specifies the exact format of the response.
+
+```xml
+<output_format>
+1. Complete TypeScript code with proper imports
+2. Inline comments explaining key logic
+3. Usage example showing how to implement the hook
+4. Error handling explanation
+5. Testing considerations
+</output_format>
+```
+
+### Advanced XML Tags
+
+#### `<reasoning>`
+For complex problems, show the thinking process.
+
+```xml
+<reasoning>
+Before implementing the solution, I need to consider:
+1. State management approach (useState vs useReducer)
+2. Side effect handling (useEffect patterns)
+3. Error boundary integration
+4. Performance optimization (useMemo/useCallback)
+</reasoning>
+```
+
+#### `<validation>`
+Define how to verify the solution works.
+
+```xml
+<validation>
+Success criteria:
+- Hook properly manages authentication state
+- Loading states are handled correctly
+- Errors are caught and displayed appropriately
+- No memory leaks or infinite re-renders
+- TypeScript compilation passes without errors
+</validation>
+```
+
+#### `<dependencies>`
+List required libraries or prerequisites.
+
+```xml
+<dependencies>
+- firebase: ^9.0.0
+- next: ^13.0.0
+- react: ^18.0.0
+- typescript: ^5.0.0
+</dependencies>
+```
+
+---
+
+## Role Definition
+
+### Primary Role Structure
+
+```xml
+<role>
+You are a [SPECIFIC TITLE] with [EXPERIENCE LEVEL] in [DOMAIN]. 
+You specialize in [SPECIFIC SKILLS] and are known for [UNIQUE QUALITIES].
+Your communication style is [TONE] and you always [BEHAVIORAL TRAITS].
+</role>
+```
+
+### Examples of Effective Roles
+
+#### Technical Expert
+```xml
+<role>
+You are a Senior DevOps Engineer with 8+ years of experience in cloud infrastructure 
+and containerization. You specialize in AWS, Kubernetes, and CI/CD pipelines. 
+You are known for creating scalable, secure, and cost-effective solutions. 
+Your communication style is direct and practical, and you always provide 
+actionable steps with clear explanations.
+</role>
+```
+
+#### Business Analyst
+```xml
+<role>
+You are a Product Manager with extensive experience in SaaS applications. 
+You specialize in user experience research, feature prioritization, and 
+stakeholder communication. You are known for data-driven decision making 
+and clear requirement documentation. Your communication style is collaborative 
+and you always consider both technical feasibility and business impact.
+</role>
+```
+
+#### Creative Professional
+```xml
+<role>
+You are a UX/UI Designer with 6+ years of experience in web and mobile applications. 
+You specialize in user research, interaction design, and design systems. 
+You are known for creating intuitive, accessible, and visually appealing interfaces. 
+Your communication style is empathetic and user-focused, and you always 
+consider the end user's needs and limitations.
+</role>
+```
+
+### Role Customization Guidelines
+
+1. **Be Specific**: Avoid generic titles like "expert" or "professional"
+2. **Include Experience Level**: Specify years of experience or seniority
+3. **Define Expertise**: List 2-3 specific technical skills or domains
+4. **Establish Reputation**: What are they known for or recognized for?
+5. **Set Communication Style**: How do they communicate? (formal, casual, direct, etc.)
+6. **Define Behavioral Traits**: What do they always do or consider?
+
+---
+
+## Context Setting
+
+### Context Categories
+
+#### **Technical Context**
+```xml
+<technical_context>
+- Framework: Next.js 13+ with App Router
+- Language: TypeScript 5.0+
+- Database: Firebase Firestore
+- Styling: Tailwind CSS
+- State Management: React hooks + Context API
+- Deployment: Vercel
+</technical_context>
+```
+
+#### **Business Context**
+```xml
+<business_context>
+- Industry: SaaS application for project management
+- Target Users: Small to medium businesses (10-100 employees)
+- Key Features: Task management, team collaboration, time tracking
+- Business Model: Freemium with paid tiers
+- Compliance Requirements: GDPR, SOC 2
+</business_context>
+```
+
+#### **User Context**
+```xml
+<user_context>
+- Primary Users: Project managers and team leads
+- Technical Level: Intermediate (comfortable with web apps)
+- Device Usage: 70% desktop, 30% mobile
+- Pain Points: Complex project tracking, poor team visibility
+- Success Metrics: Time saved, project completion rates
+</user_context>
+```
+
+#### **Project Context**
+```xml
+<project_context>
+- Phase: MVP development (3 months timeline)
+- Team Size: 4 developers, 1 designer, 1 product manager
+- Budget: $150K development budget
+- Key Milestones: Alpha (1 month), Beta (2 months), Launch (3 months)
+- Success Criteria: 100 beta users, 95% uptime, sub-2s load times
+</project_context>
+```
+
+### Context Best Practices
+
+1. **Prioritize Relevant Information**: Only include context that affects the task
+2. **Use Concrete Details**: Specific versions, numbers, and requirements
+3. **Update Regularly**: Context changes as projects evolve
+4. **Validate Assumptions**: Confirm context accuracy with stakeholders
+
+---
+
+## Instruction Clarity
+
+### The CLEAR Framework
+
+#### **C**oncrete
+- Use specific, measurable requirements
+- Avoid vague terms like "good," "better," or "optimized"
+- Provide exact specifications and constraints
+
+#### **L**ogical
+- Order instructions in logical sequence
+- Group related requirements together
+- Use clear cause-and-effect relationships
+
+#### **E**xplicit
+- State assumptions clearly
+- Don't rely on implied knowledge
+- Specify edge cases and error conditions
+
+#### **A**ctionable
+- Use active voice and imperative mood
+- Provide clear steps to follow
+- Include specific deliverables
+
+#### **R**eviewable
+- Include validation criteria
+- Define success/failure conditions
+- Make requirements testable
+
+### Instruction Patterns
+
+#### **Step-by-Step Instructions**
+```xml
+<instructions>
+1. Analyze the current authentication flow
+2. Identify security vulnerabilities or UX issues
+3. Design an improved authentication system
+4. Implement the new system with proper error handling
+5. Create comprehensive tests for all scenarios
+6. Document the implementation and usage
+</instructions>
+```
+
+#### **Requirement-Based Instructions**
+```xml
+<requirements>
+MUST:
+- Use TypeScript with strict mode enabled
+- Implement proper error boundaries
+- Include loading states for all async operations
+- Follow accessibility guidelines (WCAG 2.1 AA)
+
+SHOULD:
+- Optimize for performance (Core Web Vitals)
+- Include comprehensive unit tests
+- Use semantic HTML elements
+- Implement proper SEO meta tags
+
+COULD:
+- Add advanced features like social login
+- Implement analytics tracking
+- Add internationalization support
+</requirements>
+```
+
+#### **Conditional Instructions**
+```xml
+<conditional_logic>
+IF the user is authenticated:
+  - Show the dashboard with user-specific data
+  - Enable full functionality
+  - Track user actions for analytics
+
+IF the user is not authenticated:
+  - Show login/signup forms
+  - Limit functionality to read-only
+  - Redirect to login after 30 seconds of inactivity
+
+IF there's an authentication error:
+  - Show clear error message
+  - Provide recovery options
+  - Log error for debugging
+</conditional_logic>
+```
+
+---
+
+## Example Patterns
+
+### Example Structure
+
+#### **Basic Example**
+```xml
+<example>
+<input>
+User clicks "Login" button with email: "user@example.com" and password: "password123"
+</input>
+<process>
+1. Validate input format
+2. Call Firebase Auth signInWithEmailAndPassword
+3. Handle success/error responses
+4. Update application state
+</process>
+<output>
+Success: User object with authentication token, redirect to dashboard
+Error: Clear error message, keep user on login page
+</output>
+</example>
+```
+
+#### **Complex Example with Multiple Scenarios**
+```xml
+<examples>
+<example name="successful_login">
+<input>
+{
+  "email": "user@example.com",
+  "password": "validPassword123",
+  "rememberMe": true
+}
+</input>
+<output>
+{
+  "success": true,
+  "user": {
+    "uid": "user123",
+    "email": "user@example.com",
+    "displayName": "John Doe"
+  },
+  "redirect": "/dashboard"
+}
+</output>
+</example>
+
+<example name="invalid_credentials">
+<input>
+{
+  "email": "user@example.com",
+  "password": "wrongPassword",
+  "rememberMe": false
+}
+</input>
+<output>
+{
+  "success": false,
+  "error": "Invalid email or password",
+  "field": "password",
+  "code": "auth/wrong-password"
+}
+</output>
+</example>
+</examples>
+```
+
+#### **Edge Case Examples**
+```xml
+<edge_cases>
+<example name="network_error">
+<scenario>User attempts login but network is unavailable</scenario>
+<expected_behavior>
+- Show "Network error, please check your connection" message
+- Retry button appears after 3 seconds
+- Form remains populated with user data
+</expected_behavior>
+</example>
+
+<example name="rate_limiting">
+<scenario>User exceeds login attempts (5 failed attempts in 10 minutes)</scenario>
+<expected_behavior>
+- Show "Too many attempts, please try again in 10 minutes" message
+- Disable login form temporarily
+- Suggest password reset option
+</expected_behavior>
+</example>
+</edge_cases>
+```
+
+### Example Best Practices
+
+1. **Cover Common Scenarios**: Include typical use cases
+2. **Include Edge Cases**: Handle error conditions and unusual inputs
+3. **Show Complete Data**: Don't use "..." or abbreviated examples
+4. **Use Real Data**: Realistic usernames, emails, and content
+5. **Demonstrate Variations**: Show different input/output combinations
+
+---
+
+## Output Formatting
+
+### Format Specifications
+
+#### **Code Output**
+```xml
+<output_format>
+1. Complete, runnable code files
+2. Proper file organization and naming
+3. Comprehensive inline comments
+4. Import statements and dependencies
+5. TypeScript type definitions
+6. Error handling implementation
+7. Usage examples and documentation
+</output_format>
+```
+
+#### **Documentation Output**
+```xml
+<documentation_format>
+1. Executive summary (2-3 sentences)
+2. Technical implementation details
+3. Usage instructions with examples
+4. Configuration options
+5. Troubleshooting guide
+6. Performance considerations
+7. Security implications
+</documentation_format>
+```
+
+#### **Analysis Output**
+```xml
+<analysis_format>
+1. Current state assessment
+2. Identified issues and opportunities
+3. Recommended solutions with pros/cons
+4. Implementation timeline and complexity
+5. Resource requirements
+6. Risk assessment
+7. Success metrics and KPIs
+</analysis_format>
+```
+
+### Formatting Guidelines
+
+#### **Code Formatting**
+- Use consistent indentation (2 or 4 spaces)
+- Include proper syntax highlighting markers
+- Add meaningful comments for complex logic
+- Use descriptive variable and function names
+- Include error handling and edge cases
+
+#### **Documentation Formatting**
+- Use clear headings and subheadings
+- Include code snippets with proper formatting
+- Use bullet points for lists and requirements
+- Add links to relevant resources
+- Include version information and compatibility notes
+
+#### **Response Structure**
+```xml
+<response_structure>
+1. **Summary**: Brief overview of the solution
+2. **Implementation**: Complete code with explanations
+3. **Usage**: How to use the solution
+4. **Testing**: How to verify it works
+5. **Considerations**: Important notes and limitations
+</response_structure>
+```
+
+---
+
+## Error Handling
+
+### Error Categories
+
+#### **Input Validation Errors**
+```xml
+<error_handling>
+<validation_errors>
+- Missing required fields
+- Invalid data formats
+- Out-of-range values
+- Unauthorized access attempts
+- Malformed requests
+</validation_errors>
+
+<error_responses>
+{
+  "error": true,
+  "message": "Email address is required",
+  "field": "email",
+  "code": "VALIDATION_ERROR"
+}
+</error_responses>
+</error_handling>
+```
+
+#### **System Errors**
+```xml
+<system_errors>
+- Database connection failures
+- Network timeouts
+- Service unavailability
+- Rate limiting exceeded
+- Memory or resource exhaustion
+</system_errors>
+
+<error_recovery>
+1. Implement exponential backoff for retries
+2. Provide graceful degradation
+3. Cache responses when possible
+4. Show user-friendly error messages
+5. Log detailed error information for debugging
+</error_recovery>
+```
+
+#### **Business Logic Errors**
+```xml
+<business_errors>
+- Insufficient permissions
+- Invalid business rules
+- Workflow violations
+- Data consistency issues
+- Concurrent modification conflicts
+</business_errors>
+
+<error_prevention>
+1. Implement proper validation at all layers
+2. Use transactions for data consistency
+3. Implement optimistic locking for concurrent updates
+4. Provide clear user feedback
+5. Log business rule violations
+</error_prevention>
+```
+
+### Error Response Patterns
+
+#### **Standardized Error Format**
+```xml
+<error_format>
+{
+  "success": false,
+  "error": {
+    "code": "VALIDATION_ERROR",
+    "message": "User-friendly error message",
+    "details": "Technical details for debugging",
+    "field": "specific_field_name",
+    "timestamp": "2024-01-15T10:30:00Z",
+    "requestId": "uuid-for-tracking"
+  }
+}
+</error_format>
+```
+
+---
+
+## Advanced Techniques
+
+### Chain of Thought Prompting
+
+```xml
+<chain_of_thought>
+Before implementing the solution, let me think through this step by step:
+
+1. **Problem Analysis**: What exactly needs to be solved?
+2. **Constraint Identification**: What limitations do we have?
+3. **Solution Design**: What approach would work best?
+4. **Implementation Planning**: What steps are needed?
+5. **Validation Strategy**: How will we verify success?
+</chain_of_thought>
+```
+
+### Few-Shot Learning
+
+```xml
+<few_shot_examples>
+<example_1>
+Task: Create a login form
+Implementation: [Complete code example]
+Outcome: Functional, accessible login form with proper validation
+</example_1>
+
+<example_2>
+Task: Implement user registration
+Implementation: [Complete code example]
+Outcome: Registration form with email verification and error handling
+</example_2>
+
+<example_3>
+Task: Add password reset functionality
+Implementation: [Complete code example]
+Outcome: Complete password reset flow with email integration
+</example_3>
+</few_shot_examples>
+```
+
+### Iterative Refinement
+
+```xml
+<refinement_process>
+1. **Initial Implementation**: Basic working solution
+2. **Review Requirements**: Check against all specifications
+3. **Identify Gaps**: What's missing or could be improved?
+4. **Enhance Solution**: Add missing features and optimizations
+5. **Final Validation**: Ensure all requirements are met
+</refinement_process>
+```
+
+### Self-Correction
+
+```xml
+<self_correction>
+Let me review my solution against the requirements:
+- ✅ Uses TypeScript with proper types
+- ✅ Implements error handling
+- ✅ Follows accessibility guidelines
+- ❌ Missing comprehensive tests
+- ❌ Could improve performance with memoization
+
+I need to add tests and performance optimizations.
+</self_correction>
+```
+
+---
+
+## Testing & Validation
+
+### Testing Strategies
+
+#### **Unit Testing**
+```xml
+<unit_tests>
+Test each function and component in isolation:
+- Input validation functions
+- Business logic functions
+- Utility functions
+- Component rendering
+- Event handling
+</unit_tests>
+```
+
+#### **Integration Testing**
+```xml
+<integration_tests>
+Test how components work together:
+- API integration
+- Database operations
+- Authentication flows
+- Third-party service integration
+- Cross-component communication
+</integration_tests>
+```
+
+#### **End-to-End Testing**
+```xml
+<e2e_tests>
+Test complete user workflows:
+- User registration and login
+- Complete business processes
+- Error scenarios and recovery
+- Performance under load
+- Cross-browser compatibility
+</e2e_tests>
+```
+
+### Validation Criteria
+
+#### **Functional Validation**
+```xml
+<functional_validation>
+- All features work as specified
+- Edge cases are handled properly
+- Error conditions are managed gracefully
+- Performance meets requirements
+- Security standards are met
+</functional_validation>
+```
+
+#### **Code Quality Validation**
+```xml
+<code_quality>
+- Code follows style guidelines
+- Proper error handling is implemented
+- Comments and documentation are clear
+- No security vulnerabilities
+- Performance is optimized
+</code_quality>
+```
+
+#### **User Experience Validation**
+```xml
+<ux_validation>
+- Interface is intuitive and accessible
+- Loading states are clear
+- Error messages are helpful
+- Performance feels responsive
+- Works across devices and browsers
+</ux_validation>
+```
+
+---
+
+## Production Readiness Checklist
+
+### Before Deployment
+
+#### **Code Quality**
+- [ ] All code is properly formatted and linted
+- [ ] TypeScript compilation passes without errors
+- [ ] All tests pass (unit, integration, e2e)
+- [ ] Code coverage meets minimum requirements (>80%)
+- [ ] Security vulnerabilities are addressed
+- [ ] Performance benchmarks are met
+
+#### **Documentation**
+- [ ] README is comprehensive and up-to-date
+- [ ] API documentation is complete
+- [ ] Code comments explain complex logic
+- [ ] Deployment instructions are clear
+- [ ] Troubleshooting guide is provided
+
+#### **Configuration**
+- [ ] Environment variables are properly configured
+- [ ] Database migrations are ready
+- [ ] SSL certificates are configured
+- [ ] Monitoring and logging are set up
+- [ ] Backup and recovery procedures are in place
+
+#### **Security**
+- [ ] Authentication and authorization are implemented
+- [ ] Input validation is comprehensive
+- [ ] HTTPS is enforced
+- [ ] Security headers are configured
+- [ ] Secrets are properly managed
+
+#### **Performance**
+- [ ] Core Web Vitals meet Google standards
+- [ ] Database queries are optimized
+- [ ] Caching is implemented where appropriate
+- [ ] CDN is configured for static assets
+- [ ] Load testing has been performed
+
+#### **Monitoring**
+- [ ] Error tracking is implemented
+- [ ] Performance monitoring is active
+- [ ] Uptime monitoring is configured
+- [ ] Alerts are set up for critical issues
+- [ ] Log aggregation is working
+
+### Post-Deployment
+
+#### **Validation**
+- [ ] All features work in production
+- [ ] Performance meets expectations
+- [ ] Security scans pass
+- [ ] Monitoring systems are active
+- [ ] Backup systems are verified
+
+#### **Communication**
+- [ ] Stakeholders are notified of deployment
+- [ ] Documentation is updated
+- [ ] Team is trained on new features
+- [ ] Support procedures are in place
+- [ ] Rollback plan is documented
+
+---
+
+## Conclusion
+
+Following these prompt engineering best practices ensures that AI interactions are:
+- **Predictable**: Consistent, reliable outputs
+- **Maintainable**: Easy to update and modify
+- **Scalable**: Can handle increasing complexity
+- **Professional**: Meet industry standards
+- **Effective**: Achieve intended goals efficiently
+
+### Key Takeaways
+
+1. **Structure is Everything**: Use XML tags to organize information clearly
+2. **Context Matters**: Provide relevant background information
+3. **Examples Guide Behavior**: Show don't just tell
+4. **Validation Prevents Problems**: Test and verify everything
+5. **Production Ready**: Consider real-world deployment requirements
+
+### Next Steps
+
+1. **Implement These Patterns**: Start using these techniques in your prompts
+2. **Iterate and Improve**: Continuously refine based on results
+3. **Share and Standardize**: Ensure team consistency
+4. **Monitor and Measure**: Track effectiveness and improve over time
+
+---
+
+*This guide should be reviewed and updated regularly as AI capabilities and best practices evolve.* 
